@@ -4,12 +4,14 @@ import { createDistinationsList } from './point-edit-distination-template.js';
 import { createTypeList } from './point-edit-type-list.js';
 import { createPointEditControlsTemplate } from './point-edit-control-template.js';
 import { humanizePointDueDateTime } from '../utils/point.js';
+import he from 'he';
 
 function createPointEditTemplate({ state, pointDestinations, pointOffers, typeButton }) {
   const { point } = state;
   const { basePrice, dateFrom, dateTo, destination, type } = point;
   const pointDestination = pointDestinations.find((dest) => dest.id === destination);
   const currentOffers = createOffersList(point, pointOffers, { type });
+  const cityName = pointDestination?.name ?? ' ';
 
   return (/* html */`
   <li class="trip-events__item">
@@ -22,7 +24,7 @@ function createPointEditTemplate({ state, pointDestinations, pointOffers, typeBu
           </label>
           <input class="event__input  event__input--destination"
           id="event-destination-1" type="text" name="event-destination"
-          value="${pointDestination?.name ?? ' '}" list="destination-list-1">
+          value="${he.encode(cityName)}" list="destination-list-1" autocomplete="off" required>
           <datalist id="destination-list-1">
             ${CITIES.map((city) => (`<option value="${city}"></option>`)).join(' ')}
           </datalist>
@@ -43,7 +45,13 @@ function createPointEditTemplate({ state, pointDestinations, pointOffers, typeBu
             <span class="visually-hidden">Price</span>
             &euro;
           </label>
-          <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${basePrice}">
+          <input class="event__input  event__input--price"
+          id="event-price-1" type="text" name="event-price"
+          value="${basePrice}"
+          oninput = "this.value = this.value.replace(/[^0-9]/g, '')"
+          title="Enter a positive integer"
+          required
+          >
         </div>
 
         ${createPointEditControlsTemplate({ typeButton })}
