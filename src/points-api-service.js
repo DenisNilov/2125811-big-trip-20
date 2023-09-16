@@ -6,16 +6,16 @@ const Method = {
 };
 
 export default class PointsApiService extends ApiService {
-  get tasks() {
-    return this._load({url: 'tasks'})
+  get points() {
+    return this._load({url: 'points'})
       .then(ApiService.parseResponse);
   }
 
-  async updateTask(task) {
+  async updatePoint(point) {
     const response = await this._load({
-      url: `tasks/${task.id}`,
+      url: `points/${point.id}`,
       method: Method.PUT,
-      body: JSON.stringify(task),
+      body: JSON.stringify(point),
       headers: new Headers({'Content-Type': 'application/json'}),
     });
 
