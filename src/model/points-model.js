@@ -9,16 +9,22 @@ export default class PointsModel extends Observable {
   constructor(service, { pointsApiService }) {
     super();
     this.#service = service;
-    this.#points = this.#service.points;
+    this.#points = [];
     this.#pointsApiService = pointsApiService;
-
-    this.#pointsApiService.points.then((points) => {
-      console.log(points.map(this.#adaptToClient));
-    });
   }
 
   get points() {
     return this.#points;
+  }
+
+  async init() {
+    try {
+      const points = await this.#pointsApiService.points;
+      this.#points = points.map(this.#adaptToClient);
+      console.log(this.#points);
+    } catch (err) {
+      this.#points = [];
+    }
   }
 
   updatePoint(updateType, update) {

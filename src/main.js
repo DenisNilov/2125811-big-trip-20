@@ -46,3 +46,4 @@ render(new TripInfoView(), tripMainElement, RenderPosition.AFTERBEGIN);
 
 boardPresenter.init();
 filterPresenter.init();
+pointsModel.init();
