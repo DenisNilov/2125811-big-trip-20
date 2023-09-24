@@ -1,4 +1,5 @@
 import Observable from '../framework/observable.js';
+import { UpdateType } from '../const.js';
 
 export default class PointsModel extends Observable {
 
@@ -25,6 +26,7 @@ export default class PointsModel extends Observable {
     } catch (err) {
       this.#points = [];
     }
+    this._notify(UpdateType.INIT);
   }
 
   updatePoint(updateType, update) {
