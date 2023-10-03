@@ -8,6 +8,7 @@ import { sort } from '../utils/sort.js';
 import { filter } from '../utils/filter.js';
 import NewPointPresenter from './new-point-presenter.js';
 import NewPointButtonView from '../view/new-point-button-view.js';
+import LoadingView from '../view/loading-view.js';
 
 export default class BoardPresenter {
 
@@ -18,6 +19,7 @@ export default class BoardPresenter {
   #pointsModel = null;
   #sortComponent = null;
   #noPointComponent = null;
+  #loadingComponent = new LoadingView();
   #pointPresenters = new Map();
   #currentSortType = SortType.DAY;
   #filterModel = null;
@@ -26,6 +28,7 @@ export default class BoardPresenter {
   #isCreating = null;
   #newPointButton = null;
   #newPointButtonContainer = null;
+  #isLoading = true;
 
 
   constructor({ boardContainer, newPointButtonContainer, destinationsModel, offersModel, pointsModel, filterModel }) {
@@ -93,6 +96,12 @@ export default class BoardPresenter {
         this.#clearBoard({ resetSortType: true });
         this.#renderBoard();
         break;
+      case UpdateType.INIT:
+        this.#clearBoard();
+        this.#isLoading = false;
+        remove(this.#loadingComponent);
+        this.#renderBoard();
+        break;
     }
   };
 
@@ -141,6 +150,7 @@ export default class BoardPresenter {
 
   #clearBoard({ resetSortType = false } = {}) {
     this.#clearPointList();
+    remove(this.#loadingComponent);
 
     if (this.#noPointComponent) {
       remove(this.#noPointComponent);
@@ -158,8 +168,17 @@ export default class BoardPresenter {
     });
   }
 
+  #renderLoading() {
+    render(this.#loadingComponent, this.#boardContainer);
+  }
+
   #renderBoard() {
     render(this.#listComponent, this.#boardContainer);
+
+    if (this.#isLoading) {
+      this.#renderLoading();
+      return;
+    }
 
     if (this.points.length === 0 && !this.#isCreating) {
       this.#renderNoPoints();
