@@ -58,10 +58,6 @@ export default class BoardPresenter {
   }
 
   init() {
-    this.#newPointButton = new NewPointButtonView({
-      onClick: this.#newPointButtonClickHandler
-    });
-    render(this.#newPointButton, this.#newPointButtonContainer);
     this.#renderBoard();
   }
 
@@ -100,6 +96,7 @@ export default class BoardPresenter {
         this.#clearBoard();
         this.#isLoading = false;
         remove(this.#loadingComponent);
+        this.#renderNewPointButton();
         this.#renderBoard();
         break;
     }
@@ -170,6 +167,13 @@ export default class BoardPresenter {
 
   #renderLoading() {
     render(this.#loadingComponent, this.#boardContainer);
+  }
+
+  #renderNewPointButton() {
+    this.#newPointButton = new NewPointButtonView({
+      onClick: this.#newPointButtonClickHandler
+    });
+    render(this.#newPointButton, this.#newPointButtonContainer);
   }
 
   #renderBoard() {
