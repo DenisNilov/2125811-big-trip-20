@@ -1,4 +1,3 @@
-import { CITIES, TYPES } from '../const.js';
 import { createOffersList } from './point-edit-offers-template.js';
 import { createDistinationsList } from './point-edit-distination-template.js';
 import { createTypeList } from './point-edit-type-list.js';
@@ -12,12 +11,14 @@ function createPointEditTemplate({ state, pointDestinations, pointOffers, typeBu
   const pointDestination = pointDestinations.find((dest) => dest.id === destination);
   const currentOffers = createOffersList(point, pointOffers, { type });
   const cityName = pointDestination?.name ?? ' ';
+  const cities = pointDestinations.map((city) => city.name);
+  const types = pointOffers.map((city) => city.type);
 
   return (/* html */`
   <li class="trip-events__item">
     <form class="event event--edit" action="#" method="post">
       <header class="event__header">
-        ${createTypeList({ type }, TYPES)}
+        ${createTypeList({ type }, types)}
         <div class="event__field-group  event__field-group--destination">
           <label class="event__label  event__type-output" for="event-destination-1">
             ${type}
@@ -26,7 +27,7 @@ function createPointEditTemplate({ state, pointDestinations, pointOffers, typeBu
           id="event-destination-1" type="text" name="event-destination"
           value="${he.encode(cityName)}" list="destination-list-1" autocomplete="off" required>
           <datalist id="destination-list-1">
-            ${CITIES.map((city) => (`<option value="${city}"></option>`)).join(' ')}
+            ${cities.map((city) => (`<option value="${city}"></option>`)).join(' ')}
           </datalist>
         </div>
 

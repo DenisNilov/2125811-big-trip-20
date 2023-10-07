@@ -1,9 +1,6 @@
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { Duration } from '../const.js';
-import { getRandomInteger } from '../utils/common.js';
-
 
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
@@ -54,32 +51,6 @@ function getPointDuration(dateFrom, dateTo) {
   return pointDuration;
 }
 
-let date = dayjs().subtract(getRandomInteger(0, Duration.DAY), 'day').toDate();
-
-function getDate({ next }) {
-  const minsGap = getRandomInteger(0, Duration.MIN);
-  const hoursGap = getRandomInteger(1, Duration.HOUR);
-  const daysGap = getRandomInteger(1, Duration.DAY);
-
-  if (next) {
-    date = dayjs(date)
-      .add(minsGap, 'minute')
-      .add(hoursGap, 'hour')
-      .add(daysGap, 'day')
-      .toDate();
-  }
-
-  return date;
-}
-
-function toDay(dateTime) {
-  return dateTime ? dayjs(dateTime).format(DAY_FORMAT) : '';
-}
-
-function toTime(dateTime) {
-  return dateTime ? dayjs(dateTime).format(TIME_FORMAT) : '';
-}
-
 function isPointFuture(point) {
   return dayjs().isBefore(point.dateFrom);
 }
@@ -116,9 +87,6 @@ export {
   formatStringToShotrDate,
   formatStringToTime,
   getPointDuration,
-  getDate,
-  toDay,
-  toTime,
   isPointFuture,
   isPointPresent,
   isPointPast,
