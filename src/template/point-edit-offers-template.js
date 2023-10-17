@@ -1,4 +1,4 @@
-function createOffersList(point, pointOffers, { type }) {
+function createOffersList({ type, point, pointOffers, isDisabled }) {
   return (
     pointOffers.find((el) => el.type === type).offers.map((offer) => /* html */
       `<div class="event__offer-selector">
@@ -7,6 +7,7 @@ function createOffersList(point, pointOffers, { type }) {
       name="event-offer-${offer.title}"
       data-offer-id="${offer.id}"
       ${point.offers.find((id) => id === offer.id) === offer.id ? 'checked' : ''}
+      ${isDisabled ? 'disabled' : ''}
       >
       <label class="event__offer-label" for="event-offer-luggage-${offer.id}">
         <span class="event__offer-title">${offer.title}</span>

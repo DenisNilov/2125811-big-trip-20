@@ -5,8 +5,10 @@ const ButtonLabel = {
   [EditType.CREATING]: 'Cancel'
 };
 
-function createDeleteButtonTemplate({ type }) {
-  return `<button class="event__reset-btn" type="reset">${ButtonLabel[type]}</button>`;
+function createDeleteButtonTemplate({ type, isDisabled, isDeleting }) {
+  return `<button class="event__reset-btn" type="reset" ${isDisabled ? 'disabled' : ''}>
+    ${!isDeleting ? ButtonLabel[type] : 'Deleting...'}
+  </button>`;
 }
 
 function createRollupButtonTemplate() {
@@ -16,10 +18,12 @@ function createRollupButtonTemplate() {
   </button>`;
 }
 
-function createPointEditControlsTemplate({ typeButton: type }) {
+function createPointEditControlsTemplate({ typeButton: type, isDisabled, isSaving, isDeleting }) {
   return `
-    <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-    ${createDeleteButtonTemplate({ type })}
+    <button class="event__save-btn  btn  btn--blue" type="submit" ${isDisabled ? 'disabled' : ''}>
+    ${isSaving ? 'Saving...' : 'Save'}
+    </button>
+    ${createDeleteButtonTemplate({ type, isDisabled, isDeleting })}
     ${(type !== EditType.CREATING) ? createRollupButtonTemplate() : ''}
     `;
 }

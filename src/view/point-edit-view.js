@@ -21,7 +21,7 @@ export default class PointEditView extends AbstractStatefulView {
     this.#pointDestinations = pointDestinations;
     this.#pointOffers = pointOffers;
 
-    this._setState(PointEditView.parsePointToState({ point }));
+    this._setState(PointEditView.parsePointToState(point));
 
     this.#onSubmitClick = onFormSubmit;
     this.#onResetClick = onResetClick;
@@ -215,8 +215,23 @@ export default class PointEditView extends AbstractStatefulView {
     );
   };
 
-  static parsePointToState = ({ point }) => ({ point });
+  static parsePointToState = (point) => ({
+    point: {
+      ...point,
+      isDisabled: false,
+      isSaving: false,
+      isDeleting: false
+    }
+  });
 
-  static parseStateToPoint = (state) => state.point;
+  static parseStateToPoint = (state) => {
+    const point = state.point;
+
+    delete point.isDisabled;
+    delete point.isSaving;
+    delete point.isDeleting;
+
+    return point;
+  };
 
 }

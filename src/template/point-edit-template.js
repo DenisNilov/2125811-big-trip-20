@@ -7,9 +7,9 @@ import he from 'he';
 
 function createPointEditTemplate({ state, pointDestinations, pointOffers, typeButton }) {
   const { point } = state;
-  const { basePrice, dateFrom, dateTo, destination, type } = point;
+  const { basePrice, dateFrom, dateTo, destination, type, isDisabled, isSaving, isDeleting } = point;
   const pointDestination = pointDestinations.find((dest) => dest.id === destination);
-  const currentOffers = createOffersList(point, pointOffers, { type });
+  const currentOffers = createOffersList({ type, point, pointOffers, isDisabled });
   const cityName = pointDestination?.name ?? ' ';
   const cities = pointDestinations.map((city) => city.name);
   const types = pointOffers.map((city) => city.type);
@@ -18,14 +18,14 @@ function createPointEditTemplate({ state, pointDestinations, pointOffers, typeBu
   <li class="trip-events__item">
     <form class="event event--edit" action="#" method="post">
       <header class="event__header">
-        ${createTypeList({ type }, types)}
+        ${createTypeList({ type, types, isDisabled })}
         <div class="event__field-group  event__field-group--destination">
           <label class="event__label  event__type-output" for="event-destination-1">
             ${type}
           </label>
           <input class="event__input  event__input--destination"
           id="event-destination-1" type="text" name="event-destination"
-          value="${he.encode(cityName)}" list="destination-list-1" autocomplete="off" required>
+          value="${he.encode(cityName)}" list="destination-list-1" autocomplete="off" required ${isDisabled ? 'disabled' : ''}>
           <datalist id="destination-list-1">
             ${cities.map((city) => (`<option value="${city}"></option>`)).join(' ')}
           </datalist>
@@ -34,11 +34,11 @@ function createPointEditTemplate({ state, pointDestinations, pointOffers, typeBu
         <div class="event__field-group  event__field-group--time">
           <label class="visually-hidden" for="event-start-time-1">From</label>
           <input class="event__input  event__input--time" id="event-start-time-1" type="text"
-          name="event-start-time" value="${humanizePointDueDateTime(dateFrom)}">
+          name="event-start-time" value="${humanizePointDueDateTime(dateFrom)}" ${isDisabled ? 'disabled' : ''}>
           &mdash;
           <label class="visually-hidden" for="event-end-time-1">To</label>
           <input class="event__input  event__input--time" id="event-end-time-1" type="text"
-          name="event-end-time" value="${humanizePointDueDateTime(dateTo)}">
+          name="event-end-time" value="${humanizePointDueDateTime(dateTo)}" ${isDisabled ? 'disabled' : ''}>
         </div>
 
         <div class="event__field-group  event__field-group--price">
@@ -51,11 +51,11 @@ function createPointEditTemplate({ state, pointDestinations, pointOffers, typeBu
           value="${basePrice}"
           oninput = "this.value = this.value.replace(/[^0-9]/g, '')"
           title="Enter a positive integer"
-          required
+          required ${isDisabled ? 'disabled' : ''}
           >
         </div>
 
-        ${createPointEditControlsTemplate({ typeButton })}
+        ${createPointEditControlsTemplate({ typeButton, isDisabled, isSaving, isDeleting })}
       </header>
 
       <section class="event__details">
