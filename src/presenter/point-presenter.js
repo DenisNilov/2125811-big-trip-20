@@ -61,7 +61,8 @@ export default class PointPresenter {
     }
 
     if (this.#mode === Mode.EDITING) {
-      replace(this.#pointEditComponent, prevPointEditComponent);
+      replace(this.#pointComponent, prevPointEditComponent);
+      this.#mode = Mode.DEFAULT;
     }
 
     remove(prevPointComponent);
@@ -73,6 +74,28 @@ export default class PointPresenter {
     if (this.#mode !== Mode.DEFAULT) {
       this.#replaceFormToCard();
     }
+  }
+
+  setSaving() {
+    if (this.#mode === Mode.EDITING) {
+      this.#pointEditComponent.updateElement({
+        point: {
+          ...this.#point,
+          isDisabled: true,
+          isSaving: true
+        }
+      });
+    }
+  }
+
+  setDeleting() {
+    this.#pointEditComponent.updateElement({
+      point: {
+        ...this.#point,
+        isDisabled: true,
+        isDeleting: true
+      }
+    });
   }
 
   destroy() {
@@ -115,7 +138,6 @@ export default class PointPresenter {
       isMinorUpdate ? UpdateType.MINOR : UpdateType.PATCH,
       update
     );
-    this.#replaceFormToCard();
   };
 
   #handleDeleteClick = (point) => {
