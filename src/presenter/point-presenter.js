@@ -79,22 +79,16 @@ export default class PointPresenter {
   setSaving() {
     if (this.#mode === Mode.EDITING) {
       this.#pointEditComponent.updateElement({
-        point: {
-          ...this.#point,
-          isDisabled: true,
-          isSaving: true
-        }
+        isDisabled: true,
+        isSaving: true
       });
     }
   }
 
   setDeleting() {
     this.#pointEditComponent.updateElement({
-      point: {
-        ...this.#point,
-        isDisabled: true,
-        isDeleting: true
-      }
+      isDisabled: true,
+      isDeleting: true
     });
   }
 

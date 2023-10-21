@@ -6,7 +6,7 @@ import { humanizePointDueDateTime } from '../utils/point.js';
 import he from 'he';
 
 function createPointEditTemplate({ state, pointDestinations, pointOffers, typeButton }) {
-  const { point } = state;
+  const point = { ...state };
   const { basePrice, dateFrom, dateTo, destination, type, isDisabled, isSaving, isDeleting } = point;
   const pointDestination = pointDestinations.find((dest) => dest.id === destination);
   const currentOffers = createOffersList({ type, point, pointOffers, isDisabled });
