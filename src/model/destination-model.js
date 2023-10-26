@@ -1,6 +1,6 @@
 export default class DestinationsModel {
 
-  #destinations = [];
+  #destinations = [1];
   #pointsApiService = null;
 
   constructor(pointsApiService) {

@@ -1,23 +1,24 @@
 import AbstractView from '../framework/view/abstract-view.js';
-
-function createTripInfoTemplate() {
-  return (
-    `<section class="trip-main__trip-info  trip-info">
-    <div class="trip-info__main">
-      <h1 class="trip-info__title">Amsterdam &mdash; Chamonix &mdash; Geneva</h1>
-
-      <p class="trip-info__dates">Mar 18&nbsp;&mdash;&nbsp;20</p>
-    </div>
-
-    <p class="trip-info__cost">
-      Total: &euro;&nbsp;<span class="trip-info__cost-value">1230</span>
-    </p>
-  </section>`
-  );
-}
+import { createTripInfoTemplate } from '../template/trip-info-template.js';
 
 export default class TripInfoView extends AbstractView {
+
+  #pointsModel = null;
+  #destinationsModel = null;
+  #offersModel = null;
+
+  constructor({ pointsModel, destinationsModel, offersModel }) {
+    super();
+    this.#pointsModel = pointsModel;
+    this.#destinationsModel = destinationsModel;
+    this.#offersModel = offersModel;
+  }
+
   get template() {
-    return createTripInfoTemplate();
+    return createTripInfoTemplate({
+      pointsModel: this.#pointsModel,
+      destinationsModel: this.#destinationsModel,
+      offersModel: this.#offersModel
+    });
   }
 }
