@@ -11,7 +11,6 @@ const MIN_IN_HOUR = 60;
 const HOUR_IN_DAY = 24;
 const DAY_FORMAT = 'MMM DD';
 const TIME_FORMAT = 'HH:mm';
-const DATA_TIME = 'DD/MM/YY HH:mm';
 const MSEC_IN_HOUR = MIN_IN_HOUR * SEC_IN_MIN * MSEC_IN_SEC;
 const MSEC_IN_DAY = HOUR_IN_DAY * MSEC_IN_HOUR;
 
@@ -23,8 +22,8 @@ function formatStringToShotrDate(data) {
   return dayjs(data).format(DAY_FORMAT);
 }
 
-function humanizePointDueDateTime(dueDate) {
-  return dueDate ? dayjs(dueDate).format(DATA_TIME) : '';
+function humanizePointDueDateTime(dueDate, dateFormat) {
+  return dueDate ? dayjs(dueDate).format(dateFormat) : '';
 }
 
 function formatStringToTime(data) {
